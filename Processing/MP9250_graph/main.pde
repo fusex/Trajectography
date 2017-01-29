@@ -37,7 +37,7 @@ ViewObject3D viewObject3D;
 SecondApplet plot;
 
 void setup() {
-  surface.setVisible(false); //<>// //<>// //<>//
+  surface.setVisible(false); //<>// //<>// //<>// //<>//
 
  // *********** Vue object 3D ************* 
   String[] args = {"3D View"};
@@ -65,14 +65,14 @@ void serialEvent(Serial p) {
 
   String part = p.readStringUntil('\n');
   if(part.length() == 36 ) {
-    String array[] = part.split("\t\t"); //<>// //<>// //<>//
+    String array[] = part.split("\t\t"); //<>// //<>// //<>// //<>//
     if(array.length == 6) {
        accelX = lowPassFilter(ByteBuffer.wrap(array[0].getBytes()).order(ByteOrder.LITTLE_ENDIAN).getFloat(),0.4,accelX);
        accelY = lowPassFilter(ByteBuffer.wrap(array[1].getBytes()).order(ByteOrder.LITTLE_ENDIAN).getFloat(),0.4,accelY);
        accelZ = ByteBuffer.wrap(array[2].getBytes()).order(ByteOrder.LITTLE_ENDIAN).getFloat();
   
        pitch  = lowPassFilter(ByteBuffer.wrap(array[3].getBytes()).order(ByteOrder.LITTLE_ENDIAN).getFloat(),0.4,pitch);
-       yaw    = lowPassFilter(ByteBuffer.wrap(array[4].getBytes()).order(ByteOrder.LITTLE_ENDIAN).getFloat(),0.4,yaw); //<>// //<>// //<>//
+       yaw    = lowPassFilter(ByteBuffer.wrap(array[4].getBytes()).order(ByteOrder.LITTLE_ENDIAN).getFloat(),0.4,yaw); //<>// //<>// //<>// //<>//
        roll   = lowPassFilter(ByteBuffer.wrap(array[5].getBytes()).order(ByteOrder.LITTLE_ENDIAN).getFloat(),0.4,roll);
 
 
@@ -137,17 +137,9 @@ final float alpha = 0.1;
       //print( " X " + gravity[0] + " Y " + gravity[1] + " z " + gravity[2]);
       println();
     }
-      //<>// //<>// //<>//
+      //<>// //<>// //<>// //<>//
   }
 
-  public float removeTempError(float temp) {
-    if(abs(temp) > DATA_FILTER_MIN_EDGE && abs(temp) < DATA_FILTER_MAX_EDGE) {
-      return temp;
-    }
-    else {
-      return 0;
-    }
-  }
 
    public float getNewPos(float oldPos,float newSpeed) {
       return oldPos + newSpeed*deltaT;
