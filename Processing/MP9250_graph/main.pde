@@ -67,9 +67,9 @@ void serialEvent(Serial p) {
   if(part.length() == 36 ) {
     String array[] = part.split("\t\t"); //<>// //<>// //<>// //<>//
     if(array.length == 6) {
-       accelX = lowPassFilter(ByteBuffer.wrap(array[0].getBytes()).order(ByteOrder.LITTLE_ENDIAN).getFloat(),0.4,accelX);
-       accelY = lowPassFilter(ByteBuffer.wrap(array[1].getBytes()).order(ByteOrder.LITTLE_ENDIAN).getFloat(),0.4,accelY);
-       accelZ = ByteBuffer.wrap(array[2].getBytes()).order(ByteOrder.LITTLE_ENDIAN).getFloat();
+       accelX = lowPassFilter(ByteBuffer.wrap(array[0].getBytes()).order(ByteOrder.LITTLE_ENDIAN).getFloat(),0.01,accelX);
+       accelY = lowPassFilter(ByteBuffer.wrap(array[1].getBytes()).order(ByteOrder.LITTLE_ENDIAN).getFloat(),0.01,accelY);
+       accelZ = lowPassFilter(ByteBuffer.wrap(array[2].getBytes()).order(ByteOrder.LITTLE_ENDIAN).getFloat(),0.01,accelZ);
   
        pitch  = lowPassFilter(ByteBuffer.wrap(array[3].getBytes()).order(ByteOrder.LITTLE_ENDIAN).getFloat(),0.4,pitch);
        yaw    = lowPassFilter(ByteBuffer.wrap(array[4].getBytes()).order(ByteOrder.LITTLE_ENDIAN).getFloat(),0.4,yaw); //<>// //<>// //<>// //<>//
@@ -81,15 +81,22 @@ void serialEvent(Serial p) {
     //gravity[1] =   cos(pitch) * sin(roll);
     //gravity[2] =   cos(pitch) * cos(roll);
     
-    gravity[0] = -cos(roll) * sin(pitch) * cos(yaw) + sin(roll) * sin(yaw);
-    gravity[1] =   cos(roll) * sin(pitch) * sin(yaw) + sin(roll) * cos(yaw);
-    gravity[2] =   cos(pitch) * cos(roll);
-    // P B
-    //A R
+    float cx, cy, cz, sx, sy, sz;
     
-    // A pitch
-    // B roll
-    // C yaw
+    // roll => x
+    // yaw   => y
+    // pitch => z
+    cx = cos(-roll);
+    cy = cos(yaw);
+    cz = cos(pitch);
+    sx = sin(-roll);
+    sy = sin(yaw);
+    sz = sin(pitch);
+    
+    gravity[0] =  -sz;
+    gravity[1] =  -cz * sx;
+    gravity[2] =  cz * cx;
+    //  println( " accelX     " + accelX     + " accelY     " + accelY     + " accelZ     " + accelZ);
 
     accelX = accelX - gravity[0];
     accelY = accelY - gravity[1];
@@ -110,20 +117,16 @@ final float alpha = 0.1;
     setYaw(yaw);
     setRoll(roll);
     
-    // Compute gravity
-    // y p
-    // p y
-    // r p
-    // p r
-    // r y
-    // 
-
-    // Remove gravity
-   
+    
+    plot.setPosX(accelX);
+    plot.setPosY(accelY);
+    plot.setPosZ(accelZ);
+    
+    // Integrate to speed
     oldSpeedX = getNewSpeed(oldSpeedX,accelX);
     oldSpeedY = getNewSpeed(oldSpeedY,accelY);
     oldSpeedZ = getNewSpeed(oldSpeedZ,accelZ);
-    
+    // Integrate to position
     posX = getNewPos(posX,oldSpeedX);
     posY = getNewPos(posY,oldSpeedY);
     posZ = getNewPos(posZ,oldSpeedZ);
@@ -134,10 +137,10 @@ final float alpha = 0.1;
       //print( " speedX " + oldSpeedX + " speedY " + oldSpeedY + " speedZ " + oldSpeedZ);
       //println( " gravity[0] " + gravity[0] + " gravity[1] " + gravity[1] + " gravity[2] " + gravity[2]);
       println( " accelX     " + accelX     + " accelY     " + accelY     + " accelZ     " + accelZ);
-      //print( " X " + gravity[0] + " Y " + gravity[1] + " z " + gravity[2]);
+      //print( " X " + gravity[0] + " Y " + gravity[1] + " z " + gravity[2]); //<>//
       println();
     }
-      //<>// //<>// //<>// //<>//
+      //<>// //<>// //<>//
   }
 
 
@@ -151,7 +154,7 @@ final float alpha = 0.1;
 
 
   float lowPassFilter(float data, float filterVal, float smoothedVal){
-      return data * (1 - filterVal) + (smoothedVal  *  filterVal);
+      return data * (1.0 - filterVal) + (smoothedVal  *  filterVal);
   }
 
 
