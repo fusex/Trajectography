@@ -35,7 +35,7 @@ public class ViewObject3D extends PApplet {
   public void setPosY(float p_posY){posY = p_posY;}
   public void setPosZ(float p_posZ){posZ = p_posZ;}
   
-  public void setPitch(float p_pitch){pitch = normalize(p_pitch) + pitchCorrect;} //<>// //<>// //<>// //<>//
+  public void setPitch(float p_pitch){pitch = normalize(p_pitch) + pitchCorrect;} //<>// //<>// //<>// //<>// //<>//
   public void setRoll(float p_roll)  {roll = normalize(p_roll) + rollCorrect;}
   public void setYaw(float p_yaw)    {yaw = normalize(p_yaw) + yawCorrect;}
   
@@ -235,6 +235,8 @@ void displayBox() {
     //            -sy  , cy*sx             , cx*cy              , 0.0,
     //            0.0  , 0.0               , 0.0                , 1.0);
                 
+    // Y    => X   => Z
+    // Roll => Yaw => Pitch
     applyMatrix( cy*cz + sy*sx*sz  , -cy*sz + sy*sx*cz ,  sy*cx  , 0.0,
                  cx*sz             ,  cx*cz            , -sx     , 0.0,
                 -sy*cz + cy*sx*sz  ,  sy*sz + cy*sx*cz ,  cy*cx  , 0.0,

@@ -35,12 +35,12 @@ public class SecondApplet extends PApplet {
   
   
   public void settings() {
-    size(800, 600); //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+    size(800, 600); //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
   }
   
   
   public void setup() {
-      surface.setLocation(0,0); //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+      surface.setLocation(0,0); //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
       surface.setAlwaysOnTop(true);
       surface.setAlwaysOnTop(false);
 
@@ -59,11 +59,11 @@ public class SecondApplet extends PApplet {
     // Create a new plot and set its position on the screen
      plot = new GPlot(this);
      plot.setPos(0,0);
-     plot.setDim(750,500);
+     plot.setDim(800,500);
      
      // Set plot limit
      plot.setXLim(0,totalPoints);
-     plot.setYLim(-100000,100000);
+     plot.setYLim(-5,5);
   
     // Set the plot title and the axis labels
     plot.setTitleText("Plot");
@@ -95,7 +95,7 @@ public class SecondApplet extends PApplet {
     background(150);
     
     // draw the plot
-    plot.beginDraw(); //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+    plot.beginDraw(); //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
     plot.drawBackground();
     plot.drawBox();
     plot.drawXAxis();
@@ -115,7 +115,7 @@ public class SecondApplet extends PApplet {
     else
       i++;
       
-      plot.addPoint(new GPoint(i,posX),plot.getLayer("posX").getId()); //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+      plot.addPoint(new GPoint(i,posX),plot.getLayer("posX").getId()); //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
       plot.removePoint(0,plot.getLayer("posX").getId());
       
       plot.addPoint(new GPoint(i,-posY),plot.getLayer("posY").getId());
