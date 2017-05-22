@@ -1,0 +1,8 @@
+* libraries
+   Arduino sources used by sketches
+   
+* MPU9250_test_ROS
+   The actual main sketch without any filtering (now in ROS)
+   
+* MPU9250_trajecto
+	Old sketch with madgwick filter
